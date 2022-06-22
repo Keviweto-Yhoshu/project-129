@@ -1,6 +1,9 @@
 going_bad =" ";
 goodbyes=" ";
 
+scoreLeftWrist = "0";
+SongStatus = "going_bad.mp3";
+
 leftWristX = 0;
 leftWristY = 0;
 
@@ -22,6 +25,7 @@ function setup(){
 function preload(){
     going_bad= loadSound("going_bad.mp3");
     goodbyes= loadSound("goodbyes.mp3");
+
 }
 
 function modelLoaded(){
@@ -30,11 +34,31 @@ function modelLoaded(){
 
 function draw(){
     image(video, 0, 0, 500, 400);
+
+    fill("#FF0000");
+    stroke("#FF0000");
+
+    SongStatus = going_bad.isPlaying();
+    console.log(SongStatus)
+
+    if(scoreLeftWrist >0.2){
+        circle(leftWristX, leftWristY, 20);
+        goodbyes.stop();
+     
+    if(SongStatus == false ){
+       going_bad.play();
+    }
+    else{
+        document.getElementById("song_name").innerHTML = "Song Name : Going Bad";
+    }
+}
 }
 
 function gotPoses(results){
     if(results.length > 0){
         console.log(results);
+        scoreLeftWrist = results[0].pose.keypoints[9].score;
+        console.log(scoreLeftWrist);
 
         leftWristX= results[0].pose.leftWrist.x;
         leftWristY= results[0].pose.lefttWrist.y;
